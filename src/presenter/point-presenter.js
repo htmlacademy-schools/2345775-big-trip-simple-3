@@ -30,12 +30,12 @@ export default class PointPresenter {
 
     this.#pointComponent = new PointView({
       tripPoint: this.#point,
-      handleClick: this.#handleEditClick
+      onClick: this.#handleEditClick
     });
 
     this.#editFormComponent = new PointEditorView({
       tripPoint: point,
-      handleSubmit: this.#handleFormSubmit
+      onSubmit: this.#handleFormSubmit
     });
 
     if (prevPointComponent === null || prevEditFormComponent === null) {
