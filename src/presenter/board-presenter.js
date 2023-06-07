@@ -46,9 +46,9 @@ export default class BoardPresenter {
     });
   }
 
-  #renderHandleModeChange() {
+  #renderHandleModeChange = () => {
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
-  }
+  };
 
   #renderBoard() {
     if (this.#points.length === 0) {
