@@ -75,7 +75,7 @@ function createEditFormTemplate(isEditForm, onePoint, offers, destinations) {
         <label class="event__label  event__type-output" for="event-destination-${onePoint.id}">
           ${capitalizeType(onePoint.type)}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-${onePoint.id}" type="text" name="event-destination" value="${(destination) ? destination.name : ''}" list="destination-list-${onePoint.id}">
+        <input class="event__input  event__input--destination" id="event-destination-${onePoint.id}" type="text" name="event-destination" value="${(destination) ? destination.name : ''}" list="destination-list-${onePoint.id}" autocomplete="off">
         <datalist id="destination-list-${onePoint.id}">
           ${createDetinationListTemplate(destinations)}
         </datalist>
@@ -92,7 +92,7 @@ function createEditFormTemplate(isEditForm, onePoint, offers, destinations) {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-${onePoint.id}" type="text" name="event-price" value="${onePoint.basePrice}">
+        <input class="event__input  event__input--price" id="event-price-${onePoint.id}" type="number" name="event-price" value="${onePoint.basePrice}">
       </div>
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
       <button class="event__reset-btn" type="reset">${(isEditForm) ? 'Delete' : 'Cancel'}</button>
@@ -133,6 +133,7 @@ export default class PointEditorView extends AbstractStatefulView {
   #toDatepicker = null;
   #destinations = [];
   #offers = [];
+  #handleDeleteClick = null;
 
   static parsePointToState(point, offers) {
     return {
@@ -153,7 +154,8 @@ export default class PointEditorView extends AbstractStatefulView {
     destinations,
     isEditForm = true,
     onSubmit = () => (0),
-    onRollUpButton
+    onRollUpButton,
+    onDeleteClick
   }) {
     super();
     this._setState(PointEditorView.parsePointToState(onePoint, offers));
@@ -162,6 +164,7 @@ export default class PointEditorView extends AbstractStatefulView {
     this.#isEditForm = isEditForm;
     this.#handleSubmit = onSubmit;
     this.#handleRollUp = onRollUpButton;
+    this.#handleDeleteClick = onDeleteClick;
     this._restoreHandlers();
   }
 
@@ -174,6 +177,7 @@ export default class PointEditorView extends AbstractStatefulView {
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationHandler);
     this.element.querySelector('.event__input--price').addEventListener('input', this.#priceInputHandler);
     this.element.querySelector('.event__available-offers').addEventListener('change', this.#offersHandler);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
 
     this.#setFromDatePicker();
     this.#setToDatePicker();
@@ -286,5 +290,10 @@ export default class PointEditorView extends AbstractStatefulView {
     this._setState({
       offersIDs: newOffersIds
     });
+  };
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(PointEditorView.parseStateToPoint(this._state));
   };
 }
