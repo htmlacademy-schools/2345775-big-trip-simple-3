@@ -25,8 +25,8 @@ function createOffersTemplate(offersIDs, curTypeOffers, id) {
     const isOfferChecked = offersIDs.includes(offer.id) ? 'checked' : '';
     return `
     <div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title.split(' ').at(0)}-${id}" type="checkbox" name="event-offer-${offer.title.split(' ').at(0)}" ${isOfferChecked}>
-      <label class="event__offer-label" for="event-offer-${offer.title.split(' ').at(0)}-${id}">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title.split(' ').at(-1)}-${id}" type="checkbox" name="event-offer-${offer.title.split(' ').at(-1)}" ${isOfferChecked}>
+      <label class="event__offer-label" for="event-offer-${offer.title.split(' ').at(-1)}-${id}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;
         <span class="event__offer-price">${offer.price}</span>
@@ -52,7 +52,6 @@ function createEventTypeListTemplate(currentType, id) {
 }
 
 function createEditFormTemplate(isEditForm, onePoint, offers, destinations) {
-  // const visibility = onePoint.offersIDs.length === 0 ? 'visually-hidden' : '';
   const destination = getItemFromItemsById(destinations, onePoint.destination);
   const curTypeOffers = offers.find((element) => element.type === onePoint.type).offers;
   return (
@@ -277,7 +276,7 @@ export default class PointEditorView extends AbstractStatefulView {
 
   #offersHandler = (evt) => {
     evt.preventDefault();
-    const clickedOfferId = this._state.curTypeOffers.find((offer) => offer.title.split(' ').at(0) === evt.target.name.split('-').at(-1)).id;
+    const clickedOfferId = this._state.curTypeOffers.find((offer) => offer.title.split(' ').at(-1) === evt.target.name.split('-').at(-1)).id;
     const newOffersIds = this._state.offersIDs.slice();
     if (newOffersIds.includes(clickedOfferId)) {
       newOffersIds.splice(newOffersIds.indexOf(clickedOfferId), 1);
