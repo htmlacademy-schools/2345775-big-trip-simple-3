@@ -24,7 +24,6 @@ export default class BoardPresenter {
   #tripPointsModel = null;
   #pointsList = new PointListView();
   #modelOffers = null;
-  #modelDestinations = null;
 
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
@@ -39,11 +38,10 @@ export default class BoardPresenter {
   #modelFilter = null;
   #newPointPresenter = null;
 
-  constructor({boardContainer, tripPointsModel, modelOffers, modelDestinations, modelFilter, onNewPointDestroy}) {
+  constructor({boardContainer, tripPointsModel, modelOffers, modelFilter, onNewPointDestroy}) {
     this.#boardContainer = boardContainer;
     this.#tripPointsModel = tripPointsModel;
     this.#modelOffers = modelOffers;
-    this.#modelDestinations = modelDestinations;
     this.#modelFilter = modelFilter;
     this.#newPointPresenter = new NewPointPresenter({
       pointListContainer: this.#pointsList.element,
@@ -63,7 +61,7 @@ export default class BoardPresenter {
   }
 
   get destinations() {
-    return this.#modelDestinations.destinations;
+    return this.#tripPointsModel.destinations;
   }
 
   get offers() {
